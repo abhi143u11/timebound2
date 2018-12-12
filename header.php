@@ -41,146 +41,162 @@ if (isset($_SESSION['userid'])) {
           <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
           <![endif]-->
-        <style type="text/css">
-            .skin-blue .sidebar-menu>li:hover>a, .skin-blue .sidebar-menu>li.active>a {
-                color: #fff;
-                background: #11a7db !important;
-                border-left-color: #11a7db;
-                border-top: 1px solid white;
-                border-bottom: 1px solid white;
-            }
-            .skin-blue .main-header .logo{
-                display: none;
-            }
-            .main-sidebar{
-                padding-top: 10px !important;
-            }
-        </style>
+
 
     </head>
-    <body class="sidebar-mini  skin-blue">
+    <body class="sidebar-mini  skin-black">
 
         <div class="wrapper">
 
             <header class="main-header">
                 <!-- Logo -->
-                <a href="#" class="logo" style="background-color: #ECF0F5"> <!-- mini logo for sidebar mini 50x50 pixels -->
-                    <span class="logo-mini"><img src="logo2.png" style="height: 40px;"
-                                                 alt="" /></span> <!-- logo for regular state and mobile devices -->
-                    <span class="logo-lg"><b></b></span>
+                <a href="index.php" class="logo">
+                    <!-- mini logo for sidebar mini 50x50 pixels -->
+                    <span class="logo-mini"><b>T</b>Bd</span>
+                    <!-- logo for regular state and mobile devices -->
+                    <span class="logo-lg"><b>Time</b>Bound</span>
                 </a>
                 <!-- Header Navbar: style can be found in header.less -->
-                <nav class="navbar navbar-static-top">
+                <nav class="navbar navbar-static-top" role="navigation">
                     <!-- Sidebar toggle button-->
-
-                    <div class="navbar-custom-menu">
-                        <ul class="nav navbar-nav">
-                            <!-- Messages: style can be found in dropdown.less-->
-
-                            <!-- Notifications: style can be found in dropdown.less -->
-
-                            <!-- Tasks: style can be found in dropdown.less -->
-
-                            <!-- User Account: style can be found in dropdown.less -->
-                            <li class="dropdown user user-menu"><a href="#" class="toggle"
-                                                                   data-toggle="dropdown"> <span class="hidden-xs">Welcome <?php echo $admin_name; ?></span>
-
-                                </a></li>
-                            <li><a href="logout.php"><i class="fa fa-sign-out"></i><span> Logout</span>
-                                </a></li>
-                            <!-- Control Sidebar Toggle Button -->
-                        </ul>
-                    </div>
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
 
                 </nav>
+            </header> 
 
-            </header>
-            <!-- Left side column. contains the sidebar -->
             <aside class="main-sidebar">
                 <!-- sidebar: style can be found in sidebar.less -->
                 <section class="sidebar">
-                    <!-- <div class="pull-left image">
-<img src="logo2.png" class="img-circle" alt="User Image" height="45px" width="45px">
-</div>
-<br/>-->
+                    <!-- Sidebar user panel -->
+                    <!-- <div class="user-panel">
+                       <div class="pull-left image">
+                         <img src="../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+                       </div>
+                     </div> -->
                     <!-- search form -->
 
                     <!-- /.search form -->
                     <!-- sidebar menu: : style can be found in sidebar.less -->
-                    <ul class="sidebar-menu tree">
+                    <ul class="sidebar-menu">
 
-                        <img src="logo2.png" style="height: 200px;    margin-left: 50px;"
-                             alt="" />
-                             <?php if ($authority == "admin") { ?>
+                        <li>
+                            <a href="city.php">
+                                <i class="fa fa-location-arrow"></i> <span>Sector</span> 
+                            </a></li>
 
-                            <li <?php if (preg_match('/dashboard.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="dashboard.php"><i class="fa fa-dashboard"></i><span>Dashboard</span> </a></li>
+                            <li>
+                                <a href="servicetax.php">
+                                <i class="fa fa-inr"></i> <span>Service Tax</span> 
+                            </a></li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-user"></i>
+                                <span>Customer</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="customer_add.php"><i class="fa fa-circle-o"></i> Customer Add</a></li>
+                                <li><a href="customer_list.php"><i class="fa fa-circle-o"></i> Customer</a></li>
 
-         <!--<li <?php if (preg_match('/doctor.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="doctor.php"><i class="fa fa-user-md"></i><span>
-                                                                        Doctor</span></a></li>-->
-                            <li <?php if (preg_match('/patient.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="patient.php"><i class="fa fa-user"></i><span>
-                                        Patient</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-inr"></i>
+                                <span>Service Tax</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="servicetax_add.php"><i class="fa fa-circle-o"></i> Service Tax Add</a></li>
+                                <li><a href="servicetax_list.php"><i class="fa fa-circle-o"></i> Service Tax</a></li>
 
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-inr"></i>
+                                <span>Customer Rate</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="customer_rate_add.php"><i class="fa fa-circle-o"></i> Rate Add</a></li>
+                                <li><a href="customer_rate_list.php"><i class="fa fa-circle-o"></i> Rate</a></li>
 
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-inr"></i>
+                                <span>CD Entry</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="cdentry_add.php"><i class="fa fa-circle-o"></i>CD Entry Add</a></li>
+                                <li><a href="cdentry_list.php"><i class="fa fa-circle-o"></i>CD Entry</a></li>
 
-                            <li <?php if (preg_match('/appointment.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="appointment.php"><i class="fa fa-sticky-note"></i><span>
-                                        Add Appointment</span></a></li>
-                            <li <?php if (preg_match('/listappoinments.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="listappoinments.php"><i class="fa fa-sticky-note"></i><span>
-                                        Appointment Lists</span></a></li>
-                            <li <?php if (preg_match('/calendar.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="calendar.php"><i class="fa fa-calendar"></i><span>
-                                        Calendar</span></a></li>
-                            <li <?php if (preg_match('/tariff.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="tariff.php"><i class="fa fa-dollar"></i><span>
-                                        Tariff</span></a></li>
-                            <li class="treeview">
-                                <a href="#">
-                                    <i class="fa fa-pie-chart"></i>
-                                    <span>Reports</span>
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu" style="display: none;">
-                                    <li <?php if (preg_match('/totaltff.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="totaltff.php"><i class="fa fa-sticky-note"></i><span>
-                                                Total Tariff</span></a></li>
-                                                  <li <?php if (preg_match('/todaysapp.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="todaysapp.php"><i class="fa fa-sticky-note"></i><span>
-                                                Todays Appointment List</span></a></li>
-                                    <li <?php if (preg_match('/totalapp.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="totalapp.php"><i class="fa fa-sticky-note"></i><span>
-                                                Appointment List</span></a></li>
-                                                 <li <?php if (preg_match('/procedureslist.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="procedureslist.php"><i class="fa fa-sticky-note"></i><span>
-                                                Procedures List</span></a></li>
-                                </ul>
-                            </li>
-                            <li
-                            <?php if (preg_match('/logout.php/i', $_SERVER['SCRIPT_NAME'])) { ?>
-                                    class="active" <?php } ?>><a href="logout.php"><i
-                                        class="fa fa-sign-out"></i><span>Logout</span> </a></li>
-                            <?php } ?>
-                            <?php if ($authority == "doctor") { ?>                                                      
-                            <li <?php if (preg_match('/dashboard.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="dashboard.php"><i class="fa fa-dashboard"></i><span>Dashboard</span> </a></li>
-                            <li <?php if (preg_match('/patient.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="patient.php"><i class="fa fa-user"></i><span>
-                                        Patient</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-inr"></i>
+                                <span>Invoice</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="invoice_add.php"><i class="fa fa-circle-o"></i> Invoice Add</a></li>
+                                <li><a href="invoice_list.php"><i class="fa fa-circle-o"></i>Invoice </a></li>
 
-                            <li <?php if (preg_match('/doc_calendar.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="doc_calendar.php"><i class="fa fa-calendar"></i><span>
-                                        Today's Appointment</span></a></li>
-                                      <li class="treeview">
-                                <a href="#">
-                                    <i class="fa fa-pie-chart"></i>
-                                    <span>Reports</span>
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu" style="display: none;">
-                                    <li <?php if (preg_match('/totaltff.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="totaltff.php"><i class="fa fa-sticky-note"></i><span>
-                                                Total Tariff</span></a></li>
-                                                  <li <?php if (preg_match('/todaysapp.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="todaysapp.php"><i class="fa fa-sticky-note"></i><span>
-                                                Todays Appointment List</span></a></li>
-                                    <li <?php if (preg_match('/totalapp.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="totalapp.php"><i class="fa fa-sticky-note"></i><span>
-                                                Appointment List</span></a></li>
-                                                 <li <?php if (preg_match('/procedureslist.php/i', $_SERVER['SCRIPT_NAME'])) { ?> class="active" <?php } ?>><a href="procedureslist.php"><i class="fa fa-sticky-note"></i><span>
-                                                Procedures List</span></a></li>
-                                </ul>
-                            </li>      
-                        <?php } ?>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-inr"></i>
+                                <span>Payment</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="payment_add.php"><i class="fa fa-circle-o"></i> Payment Add</a></li>
+                                <li><a href="payment_list.php"><i class="fa fa-circle-o"></i>Payment</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-building"></i>
+                                <span>Company Profile</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="company_profile_add.php"><i class="fa fa-circle-o"></i> Company Profile Add</a></li>
+                                <li><a href="company_profile_list.php"><i class="fa fa-circle-o"></i> Company Profile </a></li>
+
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="upload_new.php">
+                                <i class="fa fa-upload"></i> <span>Upload</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a href="send_mail.php">
+                                <i class="fa fa-envelope-o"></i> <span>Send Mail</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a href="db_backup.php">
+                                <i class="fa fa-database"></i> <span>DB Backup</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a href="logout.php">
+                                <i class="fa fa-sign-out"></i> <span>Logout</span>
+                            </a>
+                        </li>
                     </ul>
                 </section>
                 <!-- /.sidebar -->

@@ -16,7 +16,7 @@ if (isset($_REQUEST['login_admin'])) {
     $us = $_REQUEST['user_name'];
     $ps = md5($_REQUEST['pass_word']);
 
-    $sel = "select * from admin_info where  admin_username='$us' and admin_password='$ps'";
+    $sel = "select * from admin where  user_name='$us' and pass_word='$ps'";
    // $sel = "select * from staff_info where  staff_name='$us' and staff_password='$ps'";
     $con = $cn->query($sel) or die($cn->error);
     
@@ -47,7 +47,7 @@ if (isset($_REQUEST['login_admin'])) {
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Dr.Takudzwa Chiwanga</title>
+  <title><?php echo $appname; ?></title>
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
   <!-- Tell the browser to be responsive to screen width -->

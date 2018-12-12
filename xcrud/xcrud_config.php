@@ -1,10 +1,11 @@
 <?php /** Configuration file; f0ska xCRUD v.1.6.25; 10/2014 */
 
+//include_once '../config.ini.php';
 error_reporting(0);
 class Xcrud_config
 {
     // default connection
-    public static $dbname = 'doctor'; // Your database name
+    public static $dbname = 'timebound2'; // Your database name
     public static $dbuser = 'root'; // Your database username
     public static $dbpass = ''; // // Your database password
     public static $dbhost = 'localhost'; // Your database host, 'localhost' is default.
@@ -93,12 +94,12 @@ class Xcrud_config
     public static $not_null_is_required = true; // makes not null fields required
     
     // features
-    public static $enable_printout = true; // show print button
+    public static $enable_printout = false; // show print button
     public static $enable_search = true; // show searck block
     public static $enable_pagination = true; // show pagination
-    public static $enable_csv_export = true; // show csv export button
+    public static $enable_csv_export = false; // show csv export button
     public static $enable_table_title = true; // show table title and toggle button
-    public static $enable_numbers = true; // show row numbers in grid
+    public static $enable_numbers = false; // show row numbers in grid
     public static $enable_limitlist = true; // show row numbers in grid
     public static $enable_sorting = true; // alows to sort by column
     public static $benchmark = false; // Displays information about the performance in the lower right corner.
