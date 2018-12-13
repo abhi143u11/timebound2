@@ -69,7 +69,7 @@ class Xcrud_config
     public static $fixed_action_buttons = true; // it allows to fix the action buttons on the right side of the table. Appears when you hover on row.
     public static $images_in_grid = true; // shows images in list view
     public static $images_in_grid_height = 55; // maximal height of thumbnails in list view
-    public static $button_labels = false; // displays button labels in grid
+    public static $button_labels = true; // displays button labels in grid
     public static $strip_tags = true; // remove all tags from data in grid view. This is not affected to user patterns or other custom.
     public static $safe_output = false; // encodes special characters to html-entities in grid view
     
@@ -99,7 +99,7 @@ class Xcrud_config
     public static $enable_pagination = true; // show pagination
     public static $enable_csv_export = false; // show csv export button
     public static $enable_table_title = true; // show table title and toggle button
-    public static $enable_numbers = false; // show row numbers in grid
+    public static $enable_numbers = true; // show row numbers in grid
     public static $enable_limitlist = true; // show row numbers in grid
     public static $enable_sorting = true; // alows to sort by column
     public static $benchmark = false; // Displays information about the performance in the lower right corner.

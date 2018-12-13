@@ -1,13 +1,22 @@
 <?php
 include('xcrud/xcrud.php');
-$title = "Sector";
+$title = "Courier Entry";
 $xcrud = Xcrud::get_instance();
-$xcrud->table('city');
-$xcrud->label('city_name', 'sector');
-$xcrud->label('city_shortcode', 'shortcode');
-$xcrud->order_by('city_name', 'asc');
+$xcrud->table('courier_entry');
+
+//$xcrud->columns('name, gst_no, contact_person, phone, mobile, email, branch, city, state, pin, status');
+$xcrud->change_type('category','select','',array('KG'=>'KG','Packets'=>'Packets'));
+$xcrud->relation('customer_id','customer','cust_id','name');
+$xcrud->relation('mode','service_tax','id','mode');
+$xcrud->relation('origin_id','city','city_id','city_name');
+$xcrud->relation('dest','city','city_id','city_name');
+$xcrud->fields('consiment_no,date,customer_id, consignee,origin_id, dest, mode,category, packets, from_weight, to_weight, actual_weight, chargeable_weight,  freight, fuel_charges, fuel_value, to_pay, pick_delivery, other_chrgs, other_charge_name, doc_charge, octrio_charge');
+$xcrud->columns('consiment_no,date,customer_id, consignee,origin_id, dest, mode,category, packets, from_weight, to_weight, actual_weight, chargeable_weight,  freight, fuel_charges, fuel_value, to_pay, pick_delivery, other_chrgs, other_charge_name, doc_charge, octrio_charge, net_amount, service_tax_value, service_tax_amount, total_amount');
+$xcrud->label('octrio_charge', 'Labour Charges');
 
 $xcrud->table_name($title);
+$xcrud->before_insert('cdentry');
+$xcrud->before_update('cdentry');
 include_once 'header.php';
 ?>
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">

@@ -1,144 +1,99 @@
 <?php
-function publish_action($xcrud)
-{
-    if ($xcrud->get('primary'))
-    {
-        $db = Xcrud_db::get_instance();
-        $query = 'UPDATE base_fields SET `bool` = b\'1\' WHERE id = ' . (int)$xcrud->get('primary');
-        $db->query($query);
+
+function cdentry($postdata, $primary, $xcrud) {
+    //$postdata->set('password', sha1( $postdata->get('password') ));
+
+    $db = Xcrud_db::get_instance();
+    $db->query('SELECT `value` FROM `service_tax` WHERE `id` = ' . $postdata->get('mode'));
+
+    $servicetax = $db->result();
+    $servicetaxrate = $servicetax[0]['value'];
+
+    $cdentrydate = date('Y-m-d', strtotime($postdata->get('date')));
+    $cust_id = $postdata->get('customer_id');
+    $dest = $postdata->get('dest');
+    $mode = $postdata->get('mode');
+    $chargeable_weight = $postdata->get('chargeable_weight');
+    $type = $postdata->get('category');
+    $topay = $postdata->get('to_pay');
+    $pick_delivery = $postdata->get('pick_delivery');
+    $other_chrgs = $postdata->get('other_chrgs');
+    $doc_charge = $postdata->get('doc_charge');
+    $octrio_charge = $postdata->get('octrio_charge');
+    $freight = $postdata->get('freight');
+
+
+    $query1 = "SELECT `from_weight`,`to_weight`,rate,fuel_charge  FROM `rate_master` WHERE ";
+    $query1 .= "'" . $cdentrydate . "' BETWEEN wef_from_date AND CURDATE() AND cust_id=" . $cust_id . " AND city_id=" . $dest . " AND mode_id=" . $mode;
+    $query1 .= " AND " . $chargeable_weight . " BETWEEN from_weight AND to_weight AND type = '" . $type . "'";
+
+    $db->query($query1);
+    $customerrate = $db->result();
+    $customer_rate = $customerrate[0]['rate'];
+    $fuelscharge = $customerrate[0]['fuel_charge'];
+
+
+    //Setting Service Tax
+    $postdata->set('service_tax_value', $servicetaxrate);
+    //Setting Customer Rate
+    $postdata->set('cust_rate', $customer_rate);
+    //Setting Fuel Surcharge Value
+    $postdata->set('fuel_value', $fuelscharge);
+    $netamount = $customer_rate * $chargeable_weight;
+    $fuelcharges = ceil(($fuelscharge * $netamount) / 100);
+    //Setting Fuel  charge Value
+    $postdata->set('fuel_charges', $fuelcharges);
+    $grandtotal = $netamount + $other_chrgs + $topay + $fuelcharges + $freight + $pick_delivery + $doc_charge + $octrio_charge;
+    
+    //Setting Net Amount
+    $postdata->set('net_amount', $grandtotal);
+
+   $servicetaxamount = ceil(($servicetaxrate * $grandtotal) / 100);
+    $total = $grandtotal + $servicetaxamount;
+
+    $postdata->set('service_tax_amount', $servicetaxamount);
+    $postdata->set('total_amount', $total);
+}
+
+function invoice($postdata, $primary, $xcrud) {
+    //$postdata->set('password', sha1( $postdata->get('password') ));
+    $mode = $postdata->get('mode');
+    $from_date = date("Y-m-d", strtotime($postdata->get('from_date')));
+    $to_date = date("Y-m-d", strtotime($postdata->get('to_date')));
+    $cust_id1 = $postdata->get('cust_id');
+    $cust_id = $postdata->get('cust_id');
+    $adjustment = $postdata->get('adjustment_amt');
+    $query = "SELECT ROUND(sum(`total_amount`),2) AS amount,GROUP_CONCAT(id ORDER BY id ASC SEPARATOR ',') as cdentry "
+            . " FROM `courier_entry` a WHERE ";
+    if ($from_date != "" && $to_date != "") {
+        $query .= " a.date BETWEEN '" . $from_date . "' AND '" . $to_date . "'";
     }
-}
-function unpublish_action($xcrud)
-{
-    if ($xcrud->get('primary'))
-    {
-        $db = Xcrud_db::get_instance();
-        $query = 'UPDATE base_fields SET `bool` = b\'0\' WHERE id = ' . (int)$xcrud->get('primary');
-        $db->query($query);
+    if ($cust_id != "") {
+        $query .= " AND a.customer_id=" . $cust_id;
     }
-}
-
-function exception_example($postdata, $primary, $xcrud)
-{
-    // get random field from $postdata
-    $postdata_prepared = array_keys($postdata->to_array());
-    shuffle($postdata_prepared);
-    $random_field = array_shift($postdata_prepared);
-    // set error message
-    $xcrud->set_exception($random_field, 'This is a test error', 'error');
-}
-
-function test_column_callback($value, $fieldname, $primary, $row, $xcrud)
-{
-    return $value . ' - nice!';
-}
-
-function after_upload_example($field, $file_name, $file_path, $params, $xcrud)
-{
-    $ext = trim(strtolower(strrchr($file_name, '.')), '.');
-    if ($ext != 'pdf' && $field == 'uploads.simple_upload')
-    {
-        unlink($file_path);
-        $xcrud->set_exception('simple_upload', 'This is not PDF', 'error');
+    if (strlen($mode) <= 0) {
+        $mode = 0;
+    } else {
+        $query .= " AND a.mode IN (" . $mode . ")";
     }
-}
 
-function movetop($xcrud)
-{
-    if ($xcrud->get('primary') !== false)
-    {
-        $primary = (int)$xcrud->get('primary');
-        $db = Xcrud_db::get_instance();
-        $query = 'SELECT `officeCode` FROM `offices` ORDER BY `ordering`,`officeCode`';
-        $db->query($query);
-        $result = $db->result();
-        $count = count($result);
+    $query .= " ORDER By  a.date";
 
-        $sort = array();
-        foreach ($result as $key => $item)
-        {
-            if ($item['officeCode'] == $primary && $key != 0)
-            {
-                array_splice($result, $key - 1, 0, array($item));
-                unset($result[$key + 1]);
-                break;
-            }
-        }
 
-        foreach ($result as $key => $item)
-        {
-            $query = 'UPDATE `offices` SET `ordering` = ' . $key . ' WHERE officeCode = ' . $item['officeCode'];
-            $db->query($query);
-        }
-    }
-}
-function movebottom($xcrud)
-{
-    if ($xcrud->get('primary') !== false)
-    {
-        $primary = (int)$xcrud->get('primary');
-        $db = Xcrud_db::get_instance();
-        $query = 'SELECT `officeCode` FROM `offices` ORDER BY `ordering`,`officeCode`';
-        $db->query($query);
-        $result = $db->result();
-        $count = count($result);
+    //$result = $database->query_fetch_full_result($query);
 
-        $sort = array();
-        foreach ($result as $key => $item)
-        {
-            if ($item['officeCode'] == $primary && $key != $count - 1)
-            {
-                unset($result[$key]);
-                array_splice($result, $key + 1, 0, array($item));
-                break;
-            }
-        }
 
-        foreach ($result as $key => $item)
-        {
-            $query = 'UPDATE `offices` SET `ordering` = ' . $key . ' WHERE officeCode = ' . $item['officeCode'];
-            $db->query($query);
-        }
-    }
-}
 
-function show_description($value, $fieldname, $primary_key, $row, $xcrud)
-{
-    $result = '';
-    if ($value == '1')
-    {
-        $result = '<i class="fa fa-check" />' . 'OK';
-    }
-    elseif ($value == '2')
-    {
-        $result = '<i class="fa fa-circle-o" />' . 'Pending';
-    }
-    return $result;
-}
+    $db = Xcrud_db::get_instance();
+    $db->query($query);
 
-function custom_field($value, $fieldname, $primary_key, $row, $xcrud)
-{
-    return '<input type="text" readonly class="xcrud-input" name="' . $xcrud->fieldname_encode($fieldname) . '" value="' . $value .
-        '" />';
-}
-function unset_val($postdata)
-{
-    $postdata->del('Paid');
-}
-
-function format_phone($new_phone)
-{
-    $new_phone = preg_replace("/[^0-9]/", "", $new_phone);
-
-    if (strlen($new_phone) == 7)
-        return preg_replace("/([0-9]{3})([0-9]{4})/", "$1-$2", $new_phone);
-    elseif (strlen($new_phone) == 10)
-        return preg_replace("/([0-9]{3})([0-9]{3})([0-9]{4})/", "($1) $2-$3", $new_phone);
-    else
-        return $new_phone;
-}
-
-function before_list_example($list, $xcrud)
-{
-    var_dump($list);
+    $result = $db->result();
+    $total_amount = $result[0]['amount'];
+    $cdentry = $result[0]['cdentry'];
+    
+    $net_total = $total_amount+$adjustment;
+    $postdata->set('cd_entry_id', $cdentry);
+    $postdata->set('total_amount', $total_amount);
+    $postdata->set('net_total',$net_total);
+    
 }

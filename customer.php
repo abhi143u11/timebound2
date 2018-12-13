@@ -1,11 +1,36 @@
 <?php
 
 include('xcrud/xcrud.php');
-$title = "Service Tax";
+$title = "Customer";
 $xcrud = Xcrud::get_instance();
-$xcrud->table('service_tax');
-
+$xcrud->default_tab('Customer');
+$xcrud->table('customer');
+$xcrud->columns('name, gst_no, contact_person, phone, mobile, email, branch, city, state, pin, status');
+$xcrud->fields('name, gst_no, contact_person, phone, mobile, email, branch, city, state, pin, status');
 $xcrud->table_name($title);
+$xcrud->order_by('name','asc');
+
+$rate_master = $xcrud->nested_table('Rate Master','cust_id','rate_master','cust_id');
+//$xcrud->columns('name, gst_no, contact_person, phone, mobile, email, branch, city, state, pin, status');
+$rate_master->relation('cust_id','customer','cust_id','name');
+$rate_master->relation('mode_id','service_tax','id','mode');
+$rate_master->relation('origin_id','city','city_id','city_name');
+$rate_master->relation('city_id','city','city_id','city_name');
+$rate_master->change_type('type','select','',array('KG'=>'KG','Packets'=>'Packets'));
+$rate_master->fields('origin_id,  city_id, mode_id,type, wef_from_date, wef_to_date, from_weight, to_weight, rate, fuel_charge');
+$rate_master->columns('origin_id,  city_id, mode_id,type, wef_from_date, wef_to_date, from_weight, to_weight, rate, fuel_charge');
+
+
+$invoice_master = $xcrud->nested_table('Invoice Master','cust_id','invoice','cust_id');
+$invoice_master->relation('mode','service_tax','id','mode','','',true);
+$invoice_master->relation('company_profile_id','company_profile','id','company_name');
+$invoice_master->fields('from_date, to_date, mode, adjustment_amt, cgst, sgst, igst');
+$invoice_master->columns('id,from_date, to_date, mode, cd_entry_id, total_amount, adjustment_amt, cgst, sgst, igst, net_total, company_profile_id');
+$invoice_master->order_by('id',desc);
+$invoice_master->change_type('id', 'price', '', array('prefix'=>'INV00','decimals'=>'0'));
+$invoice_master->before_update('invoice');
+$invoice_master->before_insert('invoice');
+$invoice_master->show_primary_ai_field(true);
 include_once 'header.php';
 
 
@@ -47,14 +72,14 @@ folder instead of downloading all of them to reduce the load. -->
 
     <div class="clearfix"></div>
     <div class="col-md-12">
-         <div class="box">
+        <div class="box">
         <?php
 
 
         echo $xcrud->render();
         //var_dump($xcrud);
         ?>
-
+</div>
     </div><!-- /.col -->
     <!-- ./col -->
 </div>

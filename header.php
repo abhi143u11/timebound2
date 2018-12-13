@@ -41,7 +41,11 @@ if (isset($_SESSION['userid'])) {
           <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
           <![endif]-->
-
+        <style>
+            .box{
+                padding: 10px;
+            }
+        </style>
 
     </head>
     <body class="sidebar-mini  skin-black">
@@ -84,28 +88,11 @@ if (isset($_SESSION['userid'])) {
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
 
-                        <li>
-                            <a href="city.php">
-                                <i class="fa fa-location-arrow"></i> <span>Sector</span> 
-                            </a></li>
-
-                            <li>
-                                <a href="servicetax.php">
-                                <i class="fa fa-inr"></i> <span>Service Tax</span> 
-                            </a></li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-user"></i>
-                                <span>Customer</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="customer_add.php"><i class="fa fa-circle-o"></i> Customer Add</a></li>
-                                <li><a href="customer_list.php"><i class="fa fa-circle-o"></i> Customer</a></li>
-
-                            </ul>
-                        </li>
-                        <li class="treeview">
+                        <li><a href="city.php"><i class="fa fa-location-arrow"></i> <span>Sector</span></a></li>
+                        <li><a href="customer.php"><i class="fa fa-user"></i><span>Customer</span></a></li>
+                        <li><a href="courier.php"><i class="fa fa-inr"></i> <span>Courier</span></a></li>
+                        <li><a href="servicetax.php"><i class="fa fa-inr"></i> <span>Service Tax</span></a></li>
+                        <!--<li class="treeview">
                             <a href="#">
                                 <i class="fa fa-inr"></i>
                                 <span>Service Tax</span>
@@ -191,7 +178,7 @@ if (isset($_SESSION['userid'])) {
                             <a href="db_backup.php">
                                 <i class="fa fa-database"></i> <span>DB Backup</span>
                             </a>
-                        </li>
+                        </li>-->
                         <li class="treeview">
                             <a href="logout.php">
                                 <i class="fa fa-sign-out"></i> <span>Logout</span>

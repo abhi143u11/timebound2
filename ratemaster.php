@@ -1,11 +1,16 @@
 <?php
 include('xcrud/xcrud.php');
-$title = "Sector";
+$title = "Rate Master";
 $xcrud = Xcrud::get_instance();
-$xcrud->table('city');
-$xcrud->label('city_name', 'sector');
-$xcrud->label('city_shortcode', 'shortcode');
-$xcrud->order_by('city_name', 'asc');
+$xcrud->table('rate_master');
+//$xcrud->columns('name, gst_no, contact_person, phone, mobile, email, branch, city, state, pin, status');
+$xcrud->relation('cust_id','customer','cust_id','name');
+$xcrud->relation('mode_id','service_tax','id','mode');
+$xcrud->relation('origin_id','city','city_id','city_name');
+$xcrud->relation('city_id','city','city_id','city_name');
+
+//$xcrud->label('city_shortcode', 'shortcode');
+//$xcrud->order_by('city_name', 'asc');
 
 $xcrud->table_name($title);
 include_once 'header.php';

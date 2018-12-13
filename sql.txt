@@ -1,0 +1,8 @@
+//Query for invoiced cd entry
+
+SELECT * FROM courier_entry WHERE EXISTS (SELECT * FROM invoice WHERE courier_entry.id IN (invoice.cd_entry_id))
+
+
+Query for not invoiced cd entry
+
+SELECT * FROM courier_entry WHERE NOT EXISTS (SELECT * FROM invoice WHERE courier_entry.id IN (invoice.cd_entry_id))
