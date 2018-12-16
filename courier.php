@@ -1,20 +1,98 @@
 <?php
 include('xcrud/xcrud.php');
 $title = "Courier Entry";
+
+$db = Xcrud_db::get_instance();
+$query_customers = 'SELECT * FROM `customer`';
+$db->query($query_customers);
+$rows_customers = $db->result();
+
+$query_mode = 'SELECT * FROM `service_tax`';
+$db->query($query_mode);
+$rows_modes = $db->result();
+
+
+$query_city = 'SELECT * FROM `city`';
+$db->query($query_city);
+$rows_city = $db->result();
+
 $xcrud = Xcrud::get_instance();
+
+if (isset($_POST['btnSave'])) {
+
+    $fromdate = date('Y-m-d', strtotime($_REQUEST['from_date']));
+    $todate = date('Y-m-d', strtotime($_REQUEST['to_date']));
+    if ($todate == "") {
+        $todate = date("Y-m-d");
+    }
+    $customer = $_REQUEST['customer_name'];
+
+    if ($customer != "All") {
+        $customer = trim($_REQUEST['customer_name']);
+    }
+    
+    $mode = $_REQUEST['mode'];
+    if ($mode != "All") {
+        $mode = $_REQUEST['mode'];
+    }
+
+    $city = $_REQUEST['city'];
+    if ($city != "All") {
+        $city = $_REQUEST['city'];
+    }
+}
+
+
+
+
+
 $xcrud->table('courier_entry');
+if (isset($_POST['btnSave'])) {
+     if($_REQUEST['from_date']!="" && $_REQUEST['to_date']!=""){
+         $xcrud->where('', "DATE_FORMAT( date,  '%Y-%m-%d' ) BETWEEN '" . $fromdate . "' AND '" . $todate . "'");
+     }
+    
+    if ($city != "All") {
+        $xcrud->where('dest =', $city);
+        
+        
+    }
+    
+    if ($mode != "All") {
+        $xcrud->where('',"mode LIKE '%".$mode."%'");
+       
+    }
+    
+    if ($customer != "All") {
+        $xcrud->where('customer_id =', $customer);
+    
+     
+    }
+    
+}
 
+//print_r($mode);
 //$xcrud->columns('name, gst_no, contact_person, phone, mobile, email, branch, city, state, pin, status');
-$xcrud->change_type('category','select','',array('KG'=>'KG','Packets'=>'Packets'));
-$xcrud->relation('customer_id','customer','cust_id','name');
-$xcrud->relation('mode','service_tax','id','mode');
-$xcrud->relation('origin_id','city','city_id','city_name');
-$xcrud->relation('dest','city','city_id','city_name');
+$xcrud->change_type('category', 'select', '', array('KG' => 'KG', 'Packets' => 'Packets'));
+$xcrud->relation('customer_id', 'customer', 'cust_id', 'name');
+$xcrud->relation('mode', 'service_tax', 'id', 'mode');
+$xcrud->relation('origin_id', 'city', 'city_id', 'city_name');
+$xcrud->relation('dest', 'city', 'city_id', 'city_name');
 $xcrud->fields('consiment_no,date,customer_id, consignee,origin_id, dest, mode,category, packets, from_weight, to_weight, actual_weight, chargeable_weight,  freight, fuel_charges, fuel_value, to_pay, pick_delivery, other_chrgs, other_charge_name, doc_charge, octrio_charge');
-$xcrud->columns('consiment_no,date,customer_id, consignee,origin_id, dest, mode,category, packets, from_weight, to_weight, actual_weight, chargeable_weight,  freight, fuel_charges, fuel_value, to_pay, pick_delivery, other_chrgs, other_charge_name, doc_charge, octrio_charge, net_amount, service_tax_value, service_tax_amount, total_amount');
+$xcrud->columns('consiment_no,date,customer_id, consignee,origin_id, dest, mode,category, packets, actual_weight, chargeable_weight,  freight, fuel_charges, fuel_value, to_pay, pick_delivery, other_chrgs, other_charge_name, doc_charge, octrio_charge, net_amount, service_tax_value, service_tax_amount, total_amount');
 $xcrud->label('octrio_charge', 'Labour Charges');
+$xcrud->label('consiment_no','Con. No.');
+$xcrud->label('packets','Pkts');
+$xcrud->label('packets','Pkts');
+$xcrud->label('actual_weight','Ac Wt.');
+$xcrud->label('chargeable_weight','Ch Wt.');
+$xcrud->label('packets','Pkts');
+$xcrud->label('freight','Frgt');
+$xcrud->label('to_pay','Tpay');
 
+$xcrud->sum('packets, from_weight, to_weight, actual_weight, chargeable_weight,  freight, fuel_charges, fuel_value, to_pay, pick_delivery, other_chrgs, other_charge_name, doc_charge, octrio_charge, net_amount, service_tax_value, service_tax_amount, total_amount');
 $xcrud->table_name($title);
+
 $xcrud->before_insert('cdentry');
 $xcrud->before_update('cdentry');
 include_once 'header.php';
@@ -53,14 +131,98 @@ folder instead of downloading all of them to reduce the load. -->
 </style>
 <div class="row">
 
+    <div class="col-md-12">
+        <form class="form-inline" method="POST" >
 
+
+            <div class="box">
+                <div class="box-header">
+                    <div class="row">
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="from_date">From</label>  
+                            <div class="col-md-4">
+                                <input id="from_date" name="from_date" type="text" placeholder="dd-mm-yyyy" class="form-control input-md" value="">
+                            </div>
+                        </div>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="to_date">To</label>  
+                            <div class="col-md-4">
+                                <input id="to_date" name="to_date" type="text" placeholder="dd-mm-yyyy" class="form-control input-md" value="">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="mode">Mode</label>
+                            <div class="col-md-4">
+                                <select id="mode" name="mode" class="form-control">
+                                    <option>All</option>
+                                    <?php foreach ($rows_modes as $modes) { ?>
+                                        <option value="<?php echo $modes['id']; ?>"><?php echo $modes['mode']; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="customer_name">Customer</label>
+                            <div class="col-md-4">
+                                <select id="customer_name" name="customer_name" class="form-control">
+                                    <option>All</option>
+                                    <?php foreach ($rows_customers as $customers) { ?>
+                                        <option value="<?php echo $customers['cust_id']; ?>"><?php echo $customers['name']; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="customer_name">City</label>
+                            <div class="col-md-4">
+                                <select id="city" name="city" class="form-control">
+                                    <option>All</option>
+                                    <?php foreach ($rows_city as $citys) { ?>
+                                        <option value="<?php echo $citys['city_id']; ?>"><?php echo $citys['city_name']; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="invoice">Invoice</label>
+                            <div class="col-md-1">
+                                <select id="invoice" name="invoice" class="form-control">
+                                    <option value="All" >All</option>
+                                    <option value="1" >Yes</option>
+                                    <option value="0" >No</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Button -->
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="btnSave"></label>
+                            <div class="col-md-4">
+                                <button id="btnSave" name="btnSave" class="btn btn-primary">Go</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
     <div class="clearfix"></div>
+
     <div class="col-md-12">
         <div class="box">
-<?php
-echo $xcrud->render();
+            <?php
+            echo $xcrud->render();
 //var_dump($xcrud);
-?>
+            ?>
         </div>
     </div><!-- /.col -->
     <!-- ./col -->
@@ -100,3 +262,41 @@ echo $xcrud->render();
 <script src="plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
+
+<script type="text/javascript">
+    $('#from_date').val("<?php if (isset($fromdate)) echo $fromdate; ?>");
+                            $('#to_date').val("<?php if (isset($todate)) echo $todate; ?>");
+<?php
+if (isset($customer)) {
+    ?>
+
+                                $('#customer_name').val("<?php if (isset($customer)) echo $customer; ?>");
+    <?php
+}
+
+if (isset($mode)) {
+    ?>
+
+                                $('#mode').val("<?php if (isset($mode)) echo $mode; ?>");
+    <?php
+}
+if (isset($invoice)) {
+    ?>
+                                $('#invoice').val("<?php if (isset($invoice)) echo $invoice; ?>");
+<?php }
+
+if (isset($city)) {
+    ?>
+                                $('#city').val("<?php if (isset($city)) echo $city; ?>");
+<?php }
+?>
+
+    
+  
+    $('#from_date').datepicker({
+        format: "dd-mm-yyyy"
+    });
+    $('#to_date').datepicker({
+        format: "dd-mm-yyyy"
+    });
+</script>

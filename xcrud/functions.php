@@ -63,7 +63,7 @@ function invoice($postdata, $primary, $xcrud) {
     $cust_id1 = $postdata->get('cust_id');
     $cust_id = $postdata->get('cust_id');
     $adjustment = $postdata->get('adjustment_amt');
-    $query = "SELECT ROUND(sum(`total_amount`),2) AS amount,GROUP_CONCAT(id ORDER BY id ASC SEPARATOR ',') as cdentry "
+    $query = "SELECT ROUND(sum(`total_amount`),2) AS amount,GROUP_CONCAT(consiment_no ORDER BY consiment_no ASC SEPARATOR ',') as cdentry "
             . " FROM `courier_entry` a WHERE ";
     if ($from_date != "" && $to_date != "") {
         $query .= " a.date BETWEEN '" . $from_date . "' AND '" . $to_date . "'";
