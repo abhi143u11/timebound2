@@ -1,6 +1,6 @@
 <?php
 include('xcrud/xcrud.php');
-$title = "Courier Entry";
+$title = "Docket Master";
 
 $db = Xcrud_db::get_instance();
 $query_customers = 'SELECT * FROM `customer`';
@@ -73,23 +73,25 @@ if (isset($_POST['btnSave'])) {
 
 //print_r($mode);
 //$xcrud->columns('name, gst_no, contact_person, phone, mobile, email, branch, city, state, pin, status');
-$xcrud->change_type('category', 'select', '', array('KG' => 'KG', 'Packets' => 'Packets'));
+//$xcrud->change_type('category', 'select', '', array('KG' => 'KG', 'Packets' => 'Packets'));
 $xcrud->relation('customer_id', 'customer', 'cust_id', 'name');
+$xcrud->relation('category', 'category', 'category_name', 'category_name');
 $xcrud->relation('mode', 'service_tax', 'id', 'mode');
 $xcrud->relation('origin_id', 'city', 'city_id', 'city_name');
 $xcrud->relation('dest', 'city', 'city_id', 'city_name');
-$xcrud->fields('consiment_no,date,customer_id, consignee,origin_id, dest, mode,category, packets, from_weight, to_weight, actual_weight, chargeable_weight,  freight, fuel_charges, fuel_value, to_pay, pick_delivery, other_chrgs, other_charge_name, doc_charge, octrio_charge');
+$xcrud->fields('consiment_no,date,customer_id, consignee,origin_id, dest, mode,category, packets,  actual_weight, chargeable_weight,  freight, fuel_charges, fuel_value, to_pay, pick_delivery, other_chrgs, other_charge_name, doc_charge, octrio_charge');
 $xcrud->columns('consiment_no,date,customer_id, consignee,origin_id, dest, mode,category, packets, actual_weight, chargeable_weight,  freight, fuel_charges, fuel_value, to_pay, pick_delivery, other_chrgs, other_charge_name, doc_charge, octrio_charge, net_amount, service_tax_value, service_tax_amount, total_amount');
 $xcrud->label('octrio_charge', 'Labour Charges');
 $xcrud->label('consiment_no','Con. No.');
 $xcrud->label('packets','Pkts');
 $xcrud->label('packets','Pkts');
 $xcrud->label('actual_weight','Ac Wt.');
-$xcrud->label('chargeable_weight','Ch Wt.');
+$xcrud->label('chargeable_weight','Ch Wt./Packets');
 $xcrud->label('packets','Pkts');
 $xcrud->label('freight','Frgt');
 $xcrud->label('to_pay','Tpay');
-
+$xcrud->label('customer_id', 'Customer Name');
+$xcrud->unset_remove();
 $xcrud->sum('packets, from_weight, to_weight, actual_weight, chargeable_weight,  freight, fuel_charges, fuel_value, to_pay, pick_delivery, other_chrgs, other_charge_name, doc_charge, octrio_charge, net_amount, service_tax_value, service_tax_amount, total_amount');
 $xcrud->table_name($title);
 
@@ -299,4 +301,28 @@ if (isset($city)) {
     $('#to_date').datepicker({
         format: "dd-mm-yyyy"
     });
+</script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
+<script type="text/javascript">
+jQuery(document).on("xcrudbeforerequest", function(event, container) {
+    if (container) {
+        jQuery(container).find("select").select2("destroy");
+    } else {
+        jQuery(".xcrud").find("select").select2("destroy");
+    }
+});
+jQuery(document).on("ready xcrudafterrequest", function(event, container) {
+    if (container) {
+        jQuery(container).find("select").select2();
+    } else {
+        jQuery(".xcrud").find("select").select2();
+    }
+});
+jQuery(document).on("xcrudbeforedepend", function(event, container, data) {
+    jQuery(container).find('select[name="' + data.name + '"]').select2("destroy");
+});
+jQuery(document).on("xcrudafterdepend", function(event, container, data) {
+    jQuery(container).find('select[name="' + data.name + '"]').select2();
+});
 </script>

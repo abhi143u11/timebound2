@@ -90,95 +90,10 @@ if (isset($_SESSION['userid'])) {
 
                         <li><a href="city.php"><i class="fa fa-location-arrow"></i> <span>Sector</span></a></li>
                         <li><a href="customer.php"><i class="fa fa-user"></i><span>Customer</span></a></li>
-                        <li><a href="courier.php"><i class="fa fa-inr"></i> <span>Courier</span></a></li>
+                        <li><a href="courier.php"><i class="fa fa-inr"></i> <span>Docket Master</span></a></li>
                         <li><a href="servicetax.php"><i class="fa fa-inr"></i> <span>Service Tax</span></a></li>
-                        <!--<li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-inr"></i>
-                                <span>Service Tax</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="servicetax_add.php"><i class="fa fa-circle-o"></i> Service Tax Add</a></li>
-                                <li><a href="servicetax_list.php"><i class="fa fa-circle-o"></i> Service Tax</a></li>
-
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-inr"></i>
-                                <span>Customer Rate</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="customer_rate_add.php"><i class="fa fa-circle-o"></i> Rate Add</a></li>
-                                <li><a href="customer_rate_list.php"><i class="fa fa-circle-o"></i> Rate</a></li>
-
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-inr"></i>
-                                <span>CD Entry</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="cdentry_add.php"><i class="fa fa-circle-o"></i>CD Entry Add</a></li>
-                                <li><a href="cdentry_list.php"><i class="fa fa-circle-o"></i>CD Entry</a></li>
-
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-inr"></i>
-                                <span>Invoice</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="invoice_add.php"><i class="fa fa-circle-o"></i> Invoice Add</a></li>
-                                <li><a href="invoice_list.php"><i class="fa fa-circle-o"></i>Invoice </a></li>
-
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-inr"></i>
-                                <span>Payment</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="payment_add.php"><i class="fa fa-circle-o"></i> Payment Add</a></li>
-                                <li><a href="payment_list.php"><i class="fa fa-circle-o"></i>Payment</a></li>
-
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-building"></i>
-                                <span>Company Profile</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="company_profile_add.php"><i class="fa fa-circle-o"></i> Company Profile Add</a></li>
-                                <li><a href="company_profile_list.php"><i class="fa fa-circle-o"></i> Company Profile </a></li>
-
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="upload_new.php">
-                                <i class="fa fa-upload"></i> <span>Upload</span>
-                            </a>
-                        </li>
-                        <li class="treeview">
-                            <a href="send_mail.php">
-                                <i class="fa fa-envelope-o"></i> <span>Send Mail</span>
-                            </a>
-                        </li>
-                        <li class="treeview">
-                            <a href="db_backup.php">
-                                <i class="fa fa-database"></i> <span>DB Backup</span>
-                            </a>
-                        </li>-->
+                        <li><a href="category.php"><i class="fa fa-file"></i> <span>Category Master</span></a></li>
+                        <li><a href="invoicemaster.php"><i class="fa fa-file-o"></i> <span>Invoice Master</span></a></li>
                         <li class="treeview">
                             <a href="logout.php">
                                 <i class="fa fa-sign-out"></i> <span>Logout</span>

@@ -1,15 +1,15 @@
 <?php
+
 include('xcrud/xcrud.php');
-$title = "Sector";
+$title = "Category Master";
 $xcrud = Xcrud::get_instance();
-$xcrud->table('city');
-$xcrud->label('city_name', 'sector');
-$xcrud->label('city_shortcode', 'shortcode');
-$xcrud->order_by('city_name', 'asc');
-$xcrud->unset_remove();
+$xcrud->table('category');
 
 $xcrud->table_name($title);
+$xcrud->unset_remove();
 include_once 'header.php';
+
+
 ?>
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 <!-- Font Awesome -->
@@ -35,25 +35,27 @@ folder instead of downloading all of them to reduce the load. -->
         text-align: left !important;
     }
 
-    .select2{
-        max-width: 400px !important;
-    }
-    .form-horizontal .control-label,.table>thead:first-child>tr:first-child>th {
-
-        text-transform: uppercase;
-    }
+       .select2{
+               max-width: 400px !important;
+       }
+.form-horizontal .control-label,.table>thead:first-child>tr:first-child>th {
+ 
+    text-transform: uppercase;
+}
 </style>
 <div class="row">
 
 
     <div class="clearfix"></div>
     <div class="col-md-12">
-        <div class="box">
-<?php
-echo $xcrud->render();
-//var_dump($xcrud);
-?>
-        </div>
+         <div class="box">
+        <?php
+
+
+        echo $xcrud->render();
+        //var_dump($xcrud);
+        ?>
+
     </div><!-- /.col -->
     <!-- ./col -->
 </div>

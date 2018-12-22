@@ -22,7 +22,7 @@ function cdentry($postdata, $primary, $xcrud) {
     $octrio_charge = $postdata->get('octrio_charge');
     $freight = $postdata->get('freight');
 
-
+ $chargeable_weight = number_format($chargeable_weight,0);
     $query1 = "SELECT `from_weight`,`to_weight`,rate,fuel_charge  FROM `rate_master` WHERE ";
     $query1 .= "'" . $cdentrydate . "' BETWEEN wef_from_date AND CURDATE() AND cust_id=" . $cust_id . " AND city_id=" . $dest . " AND mode_id=" . $mode;
     $query1 .= " AND " . $chargeable_weight . " BETWEEN from_weight AND to_weight AND type = '" . $type . "'";
@@ -95,5 +95,10 @@ function invoice($postdata, $primary, $xcrud) {
     $postdata->set('cd_entry_id', $cdentry);
     $postdata->set('total_amount', $total_amount);
     $postdata->set('net_total',$net_total);
+    
+    //Update Consignment number to invoiced
+    
+    $update_invoiced = "UPDATE `courier_entry` SET `invoiced`=1 WHERE consiment_no IN (".$cdentry.")";
+    $db->query($update_invoiced);
     
 }

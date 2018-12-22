@@ -6,6 +6,7 @@ $xcrud = Xcrud::get_instance();
 $xcrud->table('service_tax');
 
 $xcrud->table_name($title);
+$xcrud->unset_remove();
 include_once 'header.php';
 
 

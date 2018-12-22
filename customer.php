@@ -9,6 +9,8 @@ $xcrud->columns('name, gst_no, contact_person, phone, mobile, email, branch, cit
 $xcrud->fields('name, gst_no, contact_person, phone, mobile, email, branch, city, state, pin, status');
 $xcrud->table_name($title);
 $xcrud->order_by('name','asc');
+$xcrud->unset_remove();
+$xcrud->unset_view();
 
 $rate_master = $xcrud->nested_table('Rate Master','cust_id','rate_master','cust_id');
 //$xcrud->columns('name, gst_no, contact_person, phone, mobile, email, branch, city, state, pin, status');
@@ -16,10 +18,11 @@ $rate_master->relation('cust_id','customer','cust_id','name');
 $rate_master->relation('mode_id','service_tax','id','mode');
 $rate_master->relation('origin_id','city','city_id','city_name');
 $rate_master->relation('city_id','city','city_id','city_name');
-$rate_master->change_type('type','select','',array('KG'=>'KG','Packets'=>'Packets'));
+//$rate_master->change_type('type','select','',array('KG'=>'KG','Packets'=>'Packets'));
+$rate_master->relation('type', 'category', 'category_name', 'category_name');
 $rate_master->fields('origin_id,  city_id, mode_id,type, wef_from_date, wef_to_date, from_weight, to_weight, rate, fuel_charge');
 $rate_master->columns('origin_id,  city_id, mode_id,type, wef_from_date, wef_to_date, from_weight, to_weight, rate, fuel_charge');
-
+$rate_master->unset_remove();
 
 $invoice_master = $xcrud->nested_table('Invoice Master','cust_id','invoice','cust_id');
 $invoice_master->relation('mode','service_tax','id','mode','','',true);
@@ -31,6 +34,7 @@ $invoice_master->change_type('id', 'price', '', array('prefix'=>'INV00','decimal
 $invoice_master->before_update('invoice');
 $invoice_master->before_insert('invoice');
 $invoice_master->show_primary_ai_field(true);
+$invoice_master->unset_remove();
 include_once 'header.php';
 
 

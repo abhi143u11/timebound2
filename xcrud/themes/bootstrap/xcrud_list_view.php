@@ -1,4 +1,6 @@
-<?php echo $this->render_table_name(); ?>
+<?php echo $this->render_table_name();
+echo $this->render_search();
+?>
 <?php if ($this->is_create or $this->is_csv or $this->is_print){?>
         <div class="xcrud-top-actions">
             <div class="btn-group pull-right">

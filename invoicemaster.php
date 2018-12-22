@@ -3,12 +3,51 @@
 include('xcrud/xcrud.php');
 $title = "Invoice Master";
 $invoice_master = Xcrud::get_instance();
+
+$db = Xcrud_db::get_instance();
+$query_customers = 'SELECT * FROM `customer` ORDER BY name';
+$db->query($query_customers);
+$rows_customers = $db->result();
+
+
+
+if (isset($_POST['btnSave'])) {
+
+    $fromdate = date('Y-m-d', strtotime($_REQUEST['from_date']));
+    $todate = date('Y-m-d', strtotime($_REQUEST['to_date']));
+    if ($todate == "") {
+        $todate = date("Y-m-d");
+    }
+    $customer = $_REQUEST['customer_name'];
+
+    if ($customer != "All") {
+        $customer = trim($_REQUEST['customer_name']);
+    }
+    
+ 
+}
+
+
 $invoice_master->table('invoice');
+
+if (isset($_POST['btnSave'])) {
+     if($_REQUEST['from_date']!="" && $_REQUEST['to_date']!=""){
+         $invoice_master->where('', "DATE_FORMAT( create_date,  '%Y-%m-%d' ) BETWEEN '" . $fromdate . "' AND '" . $todate . "'");
+     }
+   
+    
+    if ($customer != "All") {
+        $invoice_master->where('cust_id =', $customer);
+    
+     
+    }
+    
+}
 $invoice_master->relation('cust_id','customer','cust_id','name');
 $invoice_master->relation('mode','service_tax','id','mode','','',true);
 $invoice_master->relation('company_profile_id','company_profile','id','company_name');
-$invoice_master->fields('cust_id,from_date, to_date, mode, adjustment_amt, cgst, sgst, igst,company_profile_id');
-$invoice_master->columns('id,cust_id,from_date, to_date, mode, cd_entry_id, total_amount, adjustment_amt, cgst, sgst, igst, net_total, company_profile_id');
+$invoice_master->fields('cust_id,invoice_date,from_date, to_date, mode, adjustment_amt, cgst, sgst, igst,company_profile_id');
+$invoice_master->columns('id,cust_id,invoice_date,from_date, to_date, mode, total_amount, adjustment_amt, cgst, sgst, igst, net_total, company_profile_id');
 $invoice_master->order_by('id',desc);
 //$invoice_master->change_type('id', 'price', '', array('prefix'=>'INV00','decimals'=>'0'));
 $invoice_master->before_update('invoice');
@@ -22,6 +61,9 @@ $invoice_master->label('cust_id','Customer');
 $invoice_master->label('id','Invoice No.');
 $invoice_master->label('cd_entry_id',"CD No's");
 $invoice_master->label('company_profile_id',"Company");
+$invoice_master->button('plan/download/invoice.php?id={id}','Print Invoice','fa fa-file','',array('target'=>'_blank'));
+$invoice_master->unset_view();
+$invoice_master->unset_remove();
 include_once 'header.php';
 
 
@@ -60,7 +102,53 @@ folder instead of downloading all of them to reduce the load. -->
 </style>
 <div class="row">
 
+    <div class="box">
+         <form class="form-inline" method="POST" >
 
+
+            
+                    <div class="row">
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="from_date">From</label>  
+                            <div class="col-md-4">
+                                <input id="from_date" name="from_date" type="text" placeholder="dd-mm-yyyy" class="form-control input-md" value="">
+                            </div>
+                        </div>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="to_date">To</label>  
+                            <div class="col-md-4">
+                                <input id="to_date" name="to_date" type="text" placeholder="dd-mm-yyyy" class="form-control input-md" value="">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="customer_name">Customer</label>
+                            <div class="col-md-4">
+                                <select id="customer_name" name="customer_name" class="form-control">
+                                    <option>All</option>
+                                    <?php foreach ($rows_customers as $customers) { ?>
+                                        <option value="<?php echo $customers['cust_id']; ?>"><?php echo $customers['name']; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                      
+
+                        <!-- Button -->
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="btnSave"></label>
+                            <div class="col-md-4">
+                                <button id="btnSave" name="btnSave" class="btn btn-primary">Go</button>
+                            </div>
+                        </div>
+                    </div>
+            
+        </form>
+    </div>
     <div class="clearfix"></div>
     <div class="col-md-12">
         <div class="box">
@@ -109,3 +197,50 @@ folder instead of downloading all of them to reduce the load. -->
 <script src="plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
+
+<script type="text/javascript">
+    $('#from_date').val("<?php if (isset($fromdate)) echo $fromdate; ?>");
+                            $('#to_date').val("<?php if (isset($todate)) echo $todate; ?>");
+<?php
+if (isset($customer)) {
+    ?>
+
+                                $('#customer_name').val("<?php if (isset($customer)) echo $customer; ?>");
+    <?php
+}
+
+?>
+
+    
+  
+    $('#from_date').datepicker({
+        format: "dd-mm-yyyy"
+    });
+    $('#to_date').datepicker({
+        format: "dd-mm-yyyy"
+    });
+</script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
+<script type="text/javascript">
+jQuery(document).on("xcrudbeforerequest", function(event, container) {
+    if (container) {
+        jQuery(container).find("select").select2("destroy");
+    } else {
+        jQuery(".xcrud").find("select").select2("destroy");
+    }
+});
+jQuery(document).on("ready xcrudafterrequest", function(event, container) {
+    if (container) {
+        jQuery(container).find("select").select2();
+    } else {
+        jQuery(".xcrud").find("select").select2();
+    }
+});
+jQuery(document).on("xcrudbeforedepend", function(event, container, data) {
+    jQuery(container).find('select[name="' + data.name + '"]').select2("destroy");
+});
+jQuery(document).on("xcrudafterdepend", function(event, container, data) {
+    jQuery(container).find('select[name="' + data.name + '"]').select2();
+});
+</script>
