@@ -27,6 +27,6 @@ echo $this->render_search();
         <div class="xcrud-nav">
             <?php echo $this->render_limitlist(true); ?>
             <?php echo $this->render_pagination(); ?>
-            <?php echo $this->render_search(); ?>
+         
             <?php echo $this->render_benchmark(); ?>
         </div>

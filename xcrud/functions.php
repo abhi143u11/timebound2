@@ -102,3 +102,11 @@ function invoice($postdata, $primary, $xcrud) {
     $db->query($update_invoiced);
     
 }
+
+
+
+function add_input_text($value, $field, $primary_key, $list, $xcrud) { 
+       //print_r($list);
+       $customerid = $list['courier_entry.customer_id'];
+       return $customerid;
+    }

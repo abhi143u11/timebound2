@@ -128,7 +128,7 @@ folder instead of downloading all of them to reduce the load. -->
                         <div class="form-group">
                             <label class="col-md-2 control-label" for="customer_name">Customer</label>
                             <div class="col-md-4">
-                                <select id="customer_name" name="customer_name" class="form-control">
+                                <select id="customer_name" name="customer_name" class="form-control select2">
                                     <option>All</option>
                                     <?php foreach ($rows_customers as $customers) { ?>
                                         <option value="<?php echo $customers['cust_id']; ?>"><?php echo $customers['name']; ?></option>
@@ -243,4 +243,7 @@ jQuery(document).on("xcrudbeforedepend", function(event, container, data) {
 jQuery(document).on("xcrudafterdepend", function(event, container, data) {
     jQuery(container).find('select[name="' + data.name + '"]').select2();
 });
+
+
+    jQuery('.select2').select2();
 </script>

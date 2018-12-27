@@ -268,39 +268,3 @@ folder instead of downloading all of them to reduce the load. -->
 <script src="dist/js/app.min.js"></script>
 
 <script type="text/javascript">
-    $('#from_date').val("<?php if (isset($fromdate)) echo $fromdate; ?>");
-                            $('#to_date').val("<?php if (isset($todate)) echo $todate; ?>");
-<?php
-if (isset($customer)) {
-    ?>
-
-                                $('#customer_name').val("<?php if (isset($customer)) echo $customer; ?>");
-    <?php
-}
-
-if (isset($mode)) {
-    ?>
-
-                                $('#mode').val("<?php if (isset($mode)) echo $mode; ?>");
-    <?php
-}
-if (isset($invoice)) {
-    ?>
-                                $('#invoice').val("<?php if (isset($invoice)) echo $invoice; ?>");
-<?php }
-
-if (isset($city)) {
-    ?>
-                                $('#city').val("<?php if (isset($city)) echo $city; ?>");
-<?php }
-?>
-
-    
-  
-    $('#from_date').datepicker({
-        format: "dd-mm-yyyy"
-    });
-    $('#to_date').datepicker({
-        format: "dd-mm-yyyy"
-    });
-</script>

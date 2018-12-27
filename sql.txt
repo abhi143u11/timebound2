@@ -19,3 +19,15 @@ Invoice Date, Remove CD no
 remove from weight & to weight
 
 ch wt/packets
+
+New changes
+
+city id destination
+
+customer tab working with select 2
+
+FRGHT & TOTAL to be shown
+
+Add docket charges in customer rate
+
+Cgst height

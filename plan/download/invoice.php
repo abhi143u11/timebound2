@@ -35,7 +35,7 @@ $invoicedetail = $db->result();
 
 $invoicedetail = $invoicedetail[0];
 if($invoicedetail['id']){
-$invoicedate = date('d-m-Y', strtotime($invoicedetail['create_date']));
+$invoicedate = date('d-m-Y', strtotime($invoicedetail['invoice_date']));
 $invoicefromdate = date('d-m-Y', strtotime($invoicedetail['from_date']));
 $invoicetodate = date('d-m-Y', strtotime($invoicedetail['to_date']));
 
@@ -246,7 +246,7 @@ foreach ($result_cdentrylists as $cdlist) {
 			$sgst = $invoicedetail['sgst'];
                         
 			$igst = $invoicedetail['igst'];
-                        	$adjustment  = $invoicedetail['adjustment'];
+                        	$adjustment  = $invoicedetail['adjustment_amt'];
 				$cgstamount = ($cgst*$total)/100;
 				$sgstamount = ($sgst*$total)/100;
 				$igstamount = ($igst*$total)/100;
